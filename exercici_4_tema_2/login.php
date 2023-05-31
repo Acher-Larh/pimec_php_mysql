@@ -1,27 +1,29 @@
 <!-- REDIRIGIR ELS USUARIS AL FORMULARI QUE ELS HI CORRESPON -->
+
 <?php 
-$url = $_SERVER['SERVER_NAME'];
-$user = $_GET['user'];
-switch ($_GET['id_usuari']) {
-    case 'alumne':
-        // $user = 0;
-        header("Location: http://$url/login_alumne.php");
-        break;
-    case 'professor':
-        // $user = 1;
-        header("Location: http://$url/login_professor.php");
-        break;
-    case 'administrador':
-        // $user = 2;
-        header("Location: http://$url/login_administrador.php");
-        break;
-    case 'anonimous':
-        // $user = 3;
-        header("Location: http://$url/login_anonimous.php");
-        break;
-    default:
-        break;
-}
+include "./src/templates/login_template.php";
+// $url = $_SERVER['SERVER_NAME'];
+// $user = $_GET['user'];
+// switch ($_GET['id_usuari']) {
+//     case 'alumne':
+//         // header("Location: http://$url/login.php/?id_usuari=alumne");
+//         include "login_alumne.php";
+//         break;
+//     case 'professor':
+//         include "login_professor.php";
+//         // header("Location: http://$url/login_professor.php");
+//         break;
+//     case 'administrador':
+//         include "login_administrador.php";
+//         // header("Location: http://$url/login_administrador.php");
+//         break;
+//     case 'anonimous':
+//         include "login_anonimous.php";
+//         // header("Location: http://$url/login_anonimous.php");
+//         break;
+//     default:
+//         break;
+// }
 ?>
 
 <!-- VERIFICAR LES CREDENCIALS -->
@@ -66,45 +68,79 @@ if (isset($_POST['email']) && isset($_POST['password'])) {
 $email = validate($_POST['email']);
 $password = validate($_POST['password']);
 
-$sql = "SELECT email, password FROM Usuarios WHERE email='$email' AND password='$password'";
-$resultado = $mysqli->query($sql);
-if (!$resultado) {
-    echo "Lo sentimos, este sitio web está experimentando problemas.";
-
-    echo "Error: La ejecución de la consulta falló debido a: \n";
-
-    echo "Query: " . $sql . "\n";
-
-    echo "Errno: " . $mysqli->errno . "\n";
-
-    echo "Error: " . $mysqli->error . "\n";
-
-    exit;
-
-}    
-
-if (mysqli_num_rows($resultado) !== 1) {
-    echo $user;
-    switch ($user) {
-        case 0:
-            header("Location: http://$url/login_alumne.php?error=Incorect User name or password");
-            break;
-        case 1:
-            header("Location: http://$url/login_professor.php?error=Incorect User name or password");
-            break;
-        case 2:
-            header("Location: http://$url/login_administrador.php?error=Incorect User name or password");
-            break;
-        case 3:
-            header("Location: http://$url/login_anonimous.php?error=Incorect User name or password");
-            break;
-        default:
-            break;
-    }
+function something_went_wrong($e, $url) {
+    header("Location: http://$url/login.php?error=$e");
+    // switch ($user) {
+    //     case 0:
+    //         header("Location: http://$url/login.php?error=$e");
+    //         break;
+    //     case 1:
+    //         header("Location: http://$url/login.php?error=$e");
+    //         break;
+    //     case 2:
+    //         header("Location: http://$url/login.php?error=$e");
+    //         break;
+    //     case 3:
+    //         header("Location: http://$url/login.php?error=$e");
+    //         break;
+    //     default:
+    //         break;
+    // }
     exit();
 }
 
-echo "test";
+function assert_role($id_role){
+    switch($id_role) {
+        case 1:
+            return "user_dashboard";
+            break;
+        case 2:
+            return "professor_dashboard";
+            break;
+        case 3:
+            return "admin_dashboard";
+            break;
+        case 4:
+            return "login_anonimous";
+            break;
+        default:
+            return $id_role;
+            break;
+    }
+}
+if(empty($email)){
+    something_went_wrong("Email is required", $url);
+}else if(empty($password)) {
+    something_went_wrong("Password is required", $url);
+}else {
+    
+    $sql = "SELECT * FROM Usuarios WHERE email='$email' AND password='$password'";
+
+    $resultado = $mysqli->query($sql);
+    
+    if (mysqli_num_rows($resultado) !== 1) {
+        something_went_wrong("Incorect email or password", $url);
+    }else {
+        $fila = mysqli_fetch_assoc($resultado);
+
+        if ($fila['email'] === $email && $fila['password'] === $password) {
+            
+            echo "Logged in!";
+            
+            $_SESSION['email'] = $fila['email'];
+
+            $_SESSION['nombre'] = $fila['nombre'];
+
+            $_SESSION['id_usuario'] = $fila['id_usuario'];
+
+            $_SESSION['id_role'] = $fila['id_role'];
+            
+            header("Location: ".assert_role($fila['id_role']).".php");
+
+            exit();
+        }   
+    }
+}
 
 $registros = [];
 

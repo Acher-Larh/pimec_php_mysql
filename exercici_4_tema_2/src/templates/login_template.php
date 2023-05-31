@@ -32,7 +32,7 @@
                 <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
             </p>
         </div>
-        <form method="post" action="login.php?user=0">
+        <form method="post" action="login.php">
             <h3>Iniciar Sessió</h3>
             <div class="row">
                 <div class="form-group col">

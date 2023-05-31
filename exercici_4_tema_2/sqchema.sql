@@ -95,3 +95,5 @@ INSERT INTO Estado (id_estado, estado) VALUES (NULL, "Tancada");
 INSERT INTO Estado (id_estado, estado) VALUES (NULL, "Limbo");
 
 INSERT INTO Usuarios (id_usuario, id_role, nombre, apellido_primero, apellido_segundo, email, user_name, password, cookie, fecha_registro, fecha_cookie) VALUES (NULL, 1, "Aitor", "Sanchez", "Darwin", "darwinsanchez42@gmail.com", "DAitorS", "12345", NULL, NULL, NULL);
+
+INSERT INTO Usuarios (id_usuario, id_role, nombre, apellido_primero, apellido_segundo, email, user_name, password, cookie, fecha_registro, fecha_cookie) VALUES (NULL, 3, "Moran", "Gabriel", "Darwin", "darwinsanchez421@gmail.com", "DAitorS", "12345", NULL, NULL, NULL);
