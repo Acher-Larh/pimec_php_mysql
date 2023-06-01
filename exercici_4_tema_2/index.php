@@ -1,22 +1,9 @@
-<html>
-    <head>
-        <title>Ejemplo de insertar Paises</title>
-        <style>
-            body {
-                width:80vw;
-                display: flex; 
-                flex-direction: column; 
-                margin-left: 10vw !important;
-            }
-            .contact-form {
-                width:80vw;
-            }
-        </style>
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-        <meta charset="utf-8">
-    </head>
-    <body>
-        <?php include "./src/templates/nav-bar.php"; ?>
+<?php 
+
+$site_title = "Inici - Benvingut a PIMEC Lerne";
+include getcwd()."/src/templates/header.php" ;
+
+?>
 
         <div class="jumbotron">
             <h1 class="display-4">LEARNING IS TRAINING!</h1>

@@ -14,9 +14,9 @@
                         <a class="nav-link" href="about.php">Qui Som?</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="login.php">login</a>
+                        <a class="nav-link" href="login.php">Conectar-se</a>
                     </li>
-                    <li class="nav-item dropdown">
+                    <!-- <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Conectar-se
                         </a>
@@ -26,7 +26,7 @@
                             <a class="dropdown-item" href="login.php/?id_usuari=anonimous">Anònim</a>
                             <a class="dropdown-item" href="login.php/?id_usuari=administrador">Administrador</a>
                         </div>
-                    </li>
+                    </li> -->
                 </ul>
             </div>
             <form class="form-inline my-2 my-lg-0" action="search_index.php">
