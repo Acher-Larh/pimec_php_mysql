@@ -47,6 +47,7 @@ CREATE TABLE Cursos (
 ) ENGINE=InnoDB;
 
 
+
 CREATE TABLE Profesores (
     id_profesor INT NOT NULL AUTO_INCREMENT,
     id_usuario INT NOT NULL, 
@@ -78,7 +79,7 @@ CREATE TABLE Imparticion (
 
 
 CREATE TABLE Matricula (
-    id_matricua INT NOT NULL AUTO_INCREMENT,
+    id_matricula INT NOT NULL AUTO_INCREMENT,
     id_curso INT NOT NULL,
     id_alumno INT NOT NULL,
     PRIMARY KEY (id_matricua),
@@ -86,6 +87,7 @@ CREATE TABLE Matricula (
     FOREIGN KEY (id_alumno) REFERENCES Alumnos(id_alumno)
 ) ENGINE=InnoDB;
 
+-- CONSTANT VALUES
 INSERT INTO Role (id_role, role) VALUES (NULL, "Alumne");
 INSERT INTO Role (id_role, role) VALUES (NULL, "Professor");
 INSERT INTO Role (id_role, role) VALUES (NULL, "Administrador");
@@ -94,6 +96,13 @@ INSERT INTO Estado (id_estado, estado) VALUES (NULL, "Oberta");
 INSERT INTO Estado (id_estado, estado) VALUES (NULL, "Tancada");
 INSERT INTO Estado (id_estado, estado) VALUES (NULL, "Limbo");
 
+-- VARIABLE VALUES
 INSERT INTO Usuarios (id_usuario, id_role, nombre, apellido_primero, apellido_segundo, email, user_name, password, cookie, fecha_registro, fecha_cookie) VALUES (NULL, 1, "Aitor", "Sanchez", "Darwin", "darwinsanchez42@gmail.com", "DAitorS", "12345", NULL, NULL, NULL);
 
 INSERT INTO Usuarios (id_usuario, id_role, nombre, apellido_primero, apellido_segundo, email, user_name, password, cookie, fecha_registro, fecha_cookie) VALUES (NULL, 3, "Moran", "Gabriel", "Darwin", "darwinsanchez421@gmail.com", "DAitorS", "12345", NULL, NULL, NULL);
+
+INSERT INTO Cursos (id_curso, curso, cuerpo, id_profesor, id_estado) VALUES (NULL, "Full Stack Web Development", "Aprende a desarollar aplicaciones web de servidor a cliente", 1, 1);
+
+INSERT INTO Usuarios (id_usuario, id_role, nombre, apellido_primero, apellido_segundo, email, user_name, password, cookie, fecha_registro, fecha_cookie) VALUES (NULL, 2, "Moran", "Gabriel", "Darwin", "darwinsanchez421@gmail.com", "DAitorS", "12345", NULL, NULL, NULL);
+
+INSERT INTO Matricula (id_matricula, id_curso, id_usuario) VALUES (NULL, 1, 1);

@@ -1,9 +1,11 @@
 <?php 
+$sql = "SELECT * FROM Usuarios;";
+
+
 $mysqli = new mysqli('localhost', 'root', '|º@ssw0rd123.pP', 'gestion_alumnos');
+function get_db($sql_query, $mysqli){
 
 if ($mysqli->connect_errno) {
-
-
     echo "Error de conexión.";
 
     echo "Error: Fallo al conectarse a MySQ: \n";
@@ -13,24 +15,21 @@ if ($mysqli->connect_errno) {
     echo "Error: " . $mysqli->connect_error . "\n";
 
     exit;
-
-
 }    
 
 $mysqli->set_charset("utf8");
 
 
+$resultado = $mysqli->query($sql_query);
 
-$sql = "SELECT user_name, password FROM Usuarios";
-
-if (!$resultado = $mysqli->query($sql)) {
+if (!$resultado) {
 
 
     echo "Lo sentimos, este sitio web está experimentando problemas.";
 
     echo "Error: La ejecución de la consulta falló debido a: \n";
 
-    echo "Query: " . $sql . "\n";
+    echo "Query: " . $sql_query . "\n";
 
     echo "Errno: " . $mysqli->errno . "\n";
 
@@ -39,8 +38,36 @@ if (!$resultado = $mysqli->query($sql)) {
     exit;
 
 }    
+    $db = array();
+    $resgistros = array();
+    foreach($resultado as $id=>$registro){
+        array_push($resgistros, $registro);
+    }
+
+    foreach($resgistros as $i=>$item){
+        array_push($db, $item);
+
+    }
+    
+    return $db;
+}
+
+$cursos = get_db("SELECT * FROM Cursos;", $mysqli);
+
+$matriculas = get_db("SELECT * FROM Matricula JOIN Cursos ON Cursos.id_curso=Matricula.id_curso JOIN Usuarios ON Matricula.id_usuario=Usuarios.id_usuario WHERE id_role=1 ;", $mysqli);
+
+$profesores = get_db("SELECT * FROM Usuarios WHERE id_role=2;", $mysqli);
+
+$alumnos = get_db("SELECT * FROM Usuarios WHERE id_role=1;", $mysqli);
+
+// $cursos = array();
+// foreach($cursos_db as $id=>$curso){
+//     array_push($cursos, $curso);
+// }
 $site_title = "Admin Dashboard";
+
 include getcwd()."/src/templates/header.php";
+
 ?>
 
         <div class="jumbotron">
@@ -79,7 +106,11 @@ include getcwd()."/src/templates/header.php";
                         <label for="curso">Cursos</label>
                         <select id="curso" class="custom-select">
                             <option selected>Obre per seleccionar curs</option>
-                                <?php "<option value=".$id_curso.">".$curso."</option>" ?>
+                                <?php 
+                                    for($i=0; $i<count($cursos); $i++){
+                                        echo "<option value='".$cursos[$i]["id_curso"]."'>".$cursos[$i]["curso"]."</option>";                   
+                                    }
+                                ?>
                         </select>
                     </div>
                 </div>
@@ -102,13 +133,18 @@ include getcwd()."/src/templates/header.php";
                         <label for="professor" >Professor</label>
                         <select id="professor" class="custom-select">
                             <option selected>Selecciona el professor que impartirà aquest curs.</option>
-                                <?php "<option value=".$id_professor.">".$professor."</option>" ?>
+                            <?php 
+                                    for($i=0; $i<count($profesores); $i++){
+                                        echo "<option value='".$profesores[$i]["id_usuario"]."'>".$profesores[$i]["nombre"]."</option>";                   
+                                    }
+                                ?>
                         </select>
-                        
                         <label for="id_estado">Estat del curs:</label>
                         <select id="id_estado" class="custom-select">
                             <option selected>Seleccionar l'estat en qué es troba el curs.</option>
-                                <?php "<option value=".$id_estado.">".$estado."</option>" ?>
+                            <option value="1">Oberta</option>
+                            <option value="2">Tancada</option>
+                            <option value="3">Limbo</option>
                         </select>
                     </div>
                 </div>
@@ -124,13 +160,20 @@ include getcwd()."/src/templates/header.php";
                         <label for="id_alumne">Alumne:</label>
                         <select id="id_alumne" class="custom-select">
                             <option selected>Seleccionar l'alumne registrat amb la matrícula que vols modificar.</option>
-                                <?php "<option value=".$id_alumne.">".$alumne." - ".$id_alumne."</option>" ?>
+                            <?php 
+                                    for($i=0; $i<count($alumnos); $i++){
+                                        echo "<option value='".$alumnos[$i]["id_usuario"]."'>".$alumnos[$i]["nombre"]."</option>";                   
+                                    }
+                            ?>                        
                         </select>
 
                         <label for="id_matricula">Matrícula</label>
                         <select id="id_matricula" class="custom-select">
-                            <option selected>Selecciona la matrícula que vols modificar.</option>
-                                <?php "<option value=".$id_matricula.">".$matricula."</option>" ?>
+                        <?php 
+                            for($i=0; $i<count($matriculas); $i++){
+                                echo "<option value='".$matriculas[$i]["id_matricula"]."'>".$matriculas[$i]["curso"]."</option>";                   
+                            }
+                        ?>
                         </select>
                     </div>
                 </div>
