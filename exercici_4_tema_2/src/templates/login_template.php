@@ -34,7 +34,7 @@
         </div>
         <!-- MOSTRAR MISSATGE AMB ERRORS SI N'HI HA -->
         <?php 
-            $error = $_GET['error'];
+            $error = isset($_GET['error']) ? $_GET['error'] : null;
             if($error){
                 
             ?>    

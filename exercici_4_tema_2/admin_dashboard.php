@@ -1,64 +1,39 @@
+
+<!-- FER LA CONEXIÓ A LA BASE DE DADES -->
 <?php 
-$sql = "SELECT * FROM Usuarios;";
+ob_start();
+include "./db_connect.php";
 
+$output_buffer = ob_get_contents();
 
-$mysqli = new mysqli('localhost', 'root', '|º@ssw0rd123.pP', 'gestion_alumnos');
-function get_db($sql_query, $mysqli){
+ob_end_clean();
 
-if ($mysqli->connect_errno) {
-    echo "Error de conexión.";
+echo $output_buffer;
+?>
 
-    echo "Error: Fallo al conectarse a MySQ: \n";
+<!-- INICIALITZAR LA FUNCION GET_DB() -->
+<?php 
+ob_start();
+include "./get_db.php";
 
-    echo "Error: " . $mysqli->connect_errno . "\n";
+$output_buffer = ob_get_contents();
 
-    echo "Error: " . $mysqli->connect_error . "\n";
+ob_end_clean();
 
-    exit;
-}    
-
-$mysqli->set_charset("utf8");
-
-
-$resultado = $mysqli->query($sql_query);
-
-if (!$resultado) {
-
-
-    echo "Lo sentimos, este sitio web está experimentando problemas.";
-
-    echo "Error: La ejecución de la consulta falló debido a: \n";
-
-    echo "Query: " . $sql_query . "\n";
-
-    echo "Errno: " . $mysqli->errno . "\n";
-
-    echo "Error: " . $mysqli->error . "\n";
-
-    exit;
-
-}    
-    $db = array();
-    $resgistros = array();
-    foreach($resultado as $id=>$registro){
-        array_push($resgistros, $registro);
-    }
-
-    foreach($resgistros as $i=>$item){
-        array_push($db, $item);
-
-    }
-    
-    return $db;
-}
+echo $output_buffer;
+?>
+<?php 
 
 $cursos = get_db("SELECT * FROM Cursos;", $mysqli);
 
-$matriculas = get_db("SELECT * FROM Matricula JOIN Cursos ON Cursos.id_curso=Matricula.id_curso JOIN Usuarios ON Matricula.id_usuario=Usuarios.id_usuario WHERE id_role=1 ;", $mysqli);
 
+// foreach($matriculas as $id=>$matricula){
+//     echo $matricula;
+// }
 $profesores = get_db("SELECT * FROM Usuarios WHERE id_role=2;", $mysqli);
 
-$alumnos = get_db("SELECT * FROM Usuarios WHERE id_role=1;", $mysqli);
+$alumnos = get_db("SELECT * FROM Alumnos JOIN Usuarios ON Alumnos.id_usuario=Usuarios.id_usuario;", $mysqli);
+
 
 // $cursos = array();
 // foreach($cursos_db as $id=>$curso){
@@ -154,27 +129,19 @@ include getcwd()."/src/templates/header.php";
         <hr>
         <div class="modificar_matricula">
             <h3>Modificar matrícula</h3>
-            <form action="modificar_matricula.php" method="post">
+            <form action="seleccionar_matricula.php" method="post">
                 <div class="row">
                     <div class="form-group col">
                         <label for="id_alumne">Alumne:</label>
-                        <select id="id_alumne" class="custom-select">
+                        <select id="id_alumne" class="custom-select" name="alumne">
                             <option selected>Seleccionar l'alumne registrat amb la matrícula que vols modificar.</option>
                             <?php 
                                     for($i=0; $i<count($alumnos); $i++){
-                                        echo "<option value='".$alumnos[$i]["id_usuario"]."'>".$alumnos[$i]["nombre"]."</option>";                   
+                                        echo "<option value='".$alumnos[$i]["id_alumno"]."'>".$alumnos[$i]["nombre"]."</option>";                   
                                     }
                             ?>                        
                         </select>
 
-                        <label for="id_matricula">Matrícula</label>
-                        <select id="id_matricula" class="custom-select">
-                        <?php 
-                            for($i=0; $i<count($matriculas); $i++){
-                                echo "<option value='".$matriculas[$i]["id_matricula"]."'>".$matriculas[$i]["curso"]."</option>";                   
-                            }
-                        ?>
-                        </select>
                     </div>
                 </div>
                 <button type="submit" class="btn btn-primary">Confirma</button>
@@ -205,13 +172,17 @@ include getcwd()."/src/templates/header.php";
         <hr>
         <div class="veure_curs">
         <h3>Selecciona el curs que vols visualitzar</h3>
-            <form action="curso_view.php" method="post">
+            <form action="view_curso.php" method="post">
                 <div class="row">
                     <div class="form-group col">
                         <label for="view_curso">Curs</label>
                         <select id="view_curso" class="custom-select">
                             <option selected>Selecciona el curs al que vols veure.</option>
-                            <?php "<option value=".$id_curso.">".$curso."</option>" ?>
+                                <?php 
+                                    for($i=0; $i<count($cursos); $i++){
+                                        echo "<option value='".$cursos[$i]["id_curso"]."'>".$cursos[$i]["curso"]."</option>";                   
+                                    }
+                                ?>
                         </select>
                     </div>
                 </div>

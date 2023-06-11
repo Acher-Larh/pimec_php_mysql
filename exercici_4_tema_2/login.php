@@ -1,33 +1,34 @@
 
-<!-- INCLOURE EL COS DE LA PÁGINA -->
+<!-- FER LA CONEXIÓ A LA BASE DE DADES -->
 <?php 
+ob_start();
+include "./db_connect.php";
+
+$output_buffer = ob_get_contents();
+
+ob_end_clean();
+
+echo $output_buffer;
+?>
+
+<!-- IMPORTAR LA BARRA DE NAVIGACIÓ -->
+<?php
+ob_start();
 include "./src/templates/login_template.php";
+
+$output_buffer = ob_get_contents();
+
+ob_end_clean();
+
+echo $output_buffer;
 ?>
 
 <!-- VERIFICAR LES CREDENCIALS -->
 <?php 
 
-session_start(); 
-
-$mysqli = new mysqli('localhost', 'root', '|º@ssw0rd123.pP', 'gestion_alumnos');
-
-if ($mysqli->connect_errno) {
-
-
-    echo "Error de conexión.";
-
-    echo "Error: Fallo al conectarse a MySQ: \n";
-
-    echo "Error: " . $mysqli->connect_errno . "\n";
-
-    echo "Error: " . $mysqli->connect_error . "\n";
-
-    exit;
-
-
-}    
-
-$mysqli->set_charset("utf8");
+$email = '';
+$password = '';
+$url = (empty($_SERVER['HTTPS']) ? 'http' : 'https') . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 
 if (isset($_POST['email']) && isset($_POST['password'])) {
 
@@ -42,11 +43,10 @@ if (isset($_POST['email']) && isset($_POST['password'])) {
         return $data;
 
     }
-}
+    $email = validate($_POST['email']);
+    $password = validate($_POST['password']);
 
-$email = validate($_POST['email']);
-$password = validate($_POST['password']);
-$url = $_SERVER['SERVER_NAME'];
+}
 
 function redirect($redirect_url){
     ?>
@@ -56,7 +56,7 @@ function redirect($redirect_url){
     <?php 
 }
 function something_went_wrong($e, $url) {
-    redirect("http://$url/login.php?error=$e");
+    redirect("$url?error=$e");
 }
 
 function assert_role($id_role){
@@ -78,38 +78,40 @@ function assert_role($id_role){
             break;
     }
 }
-if(empty($email)){
-    something_went_wrong("Email is required", $url);
-}else if(empty($password)) {
-    something_went_wrong("Password is required", $url);
-}else {
-    
-    $sql = "SELECT * FROM Usuarios WHERE email='$email' AND password='$password'";
 
-    $resultado = $mysqli->query($sql);
-    
-    if (mysqli_num_rows($resultado) !== 1) {
-        something_went_wrong("Incorect email or password", $url);
+if ($_SERVER['REQUEST_METHOD'] == 'POST'){
+    if(empty($email)){
+        something_went_wrong("Email is required", $url);
+    }else if(empty($password)) {
+        something_went_wrong("Password is required", $url);
     }else {
-        $fila = mysqli_fetch_assoc($resultado);
+        
+        $sql = "SELECT * FROM Usuarios WHERE email='$email' AND password='$password'";
 
-        if ($fila['email'] === $email && $fila['password'] === $password) {
-                        
-            $_SESSION['email'] = $fila['email'];
+        $resultado = $mysqli->query($sql);
+        
+        if (mysqli_num_rows($resultado) !== 1) {
+            something_went_wrong("Incorect email or password", $url);
+        }else {
+            $fila = mysqli_fetch_assoc($resultado);
+            $server_url = $_SERVER['SERVER_NAME'];
+            if ($fila['email'] === $email && $fila['password'] === $password) {
+                            
+                $_SESSION['email'] = $fila['email'];
 
-            $_SESSION['nombre'] = $fila['nombre'];
+                $_SESSION['nombre'] = $fila['nombre'];
 
-            $_SESSION['id_usuario'] = $fila['id_usuario'];
+                $_SESSION['id_usuario'] = $fila['id_usuario'];
 
-            $_SESSION['id_role'] = $fila['id_role'];
+                $_SESSION['id_role'] = $fila['id_role'];
 
-            $redirect_url = "http://" . $url . "/" . assert_role($_SESSION['id_role']) . ".php";
+                $redirect_url = "http://" . $server_url . "/exercici_4_tema_2/" . assert_role($_SESSION['id_role']) . ".php";
 
-            redirect($redirect_url);
-        }   
+                redirect($redirect_url);
+            }   
+        }
     }
 }
-
 $mysqli->close();
 
 ?>
