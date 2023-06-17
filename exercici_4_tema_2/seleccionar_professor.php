@@ -15,16 +15,16 @@ echo $output_buffer;
 $site_title = "Admin Dashboard";
 
 include getcwd()."/src/templates/header.php";
-$alumne = 0;
-if(isset($_POST['alumne'])){
-    $alumne = $_POST['alumne'];
+$profesor = 0;
+if(isset($_POST['profesor'])){
+    $profesor = $_POST['profesor'];
 }else {
+
 
     echo "Couldn't find your selection, go back to the admin dashboard and make sure you've selected an option. \n";
 }
 
-
-$matriculas = get_db("SELECT * FROM Matricula JOIN Cursos ON Cursos.id_curso=Matricula.id_curso JOIN Alumnos ON Matricula.id_alumno=Alumnos.id_alumno WHERE Alumnos.id_alumno=$alumne;", $mysqli);
+$imparticion = get_db("SELECT * FROM Imparticion JOIN Cursos ON Cursos.id_curso=Imparticion.id_curso JOIN Profesores ON Imparticion.id_profesor=Profesores.id_profesor WHERE Profesores.id_profesor=$profesor;", $mysqli);
 ?>
 
 
@@ -37,19 +37,19 @@ $matriculas = get_db("SELECT * FROM Matricula JOIN Cursos ON Cursos.id_curso=Mat
                 <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
             </p>
         </div>
-        <form action="modificar_matricula.php" method="post">
+        <form action="modificar_imparticio.php" method="post">
                 <div class="row">
                     <div class="form-group col">
-                        <h2>Alumne Seleccionat: "<?php echo $_POST['alumne']?>"</h2> 
-                        <label for="id_matricula">Matrícula</label>
-                        <select id="id_matricula" class="custom-select" name="matricula">
-                            <option selected>Seleccionar la matrícula que vols modificar.</option>
+                        <h2>Professor Seleccionat: "<?php echo $profesor?>"</h2> 
+                        <label for="id_imparticio">Curs</label>
+                        <select id="id_imparticio" class="custom-select" >
+                            <option selected>Seleccionar la impartició que vols modificar.</option>
 
                         <?php 
                         
                             
-                            for($i=0; $i<count($matriculas); $i++){
-                                echo "<option value='".$matriculas[$i]["id_matricula"]."'>".$matriculas[$i]["curso"]."</option>";                   
+                            for($i=0; $i<count($imparticion); $i++){
+                                echo "<option value='".$imparticion[$i]["id_imparticion"]."'>".$imparticion[$i]["curso"]."</option>";                   
                             }
                         ?>
                         </select>

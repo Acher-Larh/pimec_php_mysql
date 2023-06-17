@@ -30,7 +30,7 @@ $cursos = get_db("SELECT * FROM Cursos;", $mysqli);
 // foreach($matriculas as $id=>$matricula){
 //     echo $matricula;
 // }
-$profesores = get_db("SELECT * FROM Usuarios WHERE id_role=2;", $mysqli);
+$profesores = get_db("SELECT * FROM Profesores JOIN Usuarios ON Profesores.id_usuario=Usuarios.id_usuario WHERE id_role=2;", $mysqli);
 
 $alumnos = get_db("SELECT * FROM Alumnos JOIN Usuarios ON Alumnos.id_usuario=Usuarios.id_usuario;", $mysqli);
 
@@ -83,7 +83,7 @@ include getcwd()."/src/templates/header.php";
                             <option selected>Obre per seleccionar curs</option>
                                 <?php 
                                     for($i=0; $i<count($cursos); $i++){
-                                        echo "<option value='".$cursos[$i]["id_curso"]."'>".$cursos[$i]["curso"]."</option>";                   
+                                        echo "<option value='".$cursos[$i]["id_curso"]."'>".$cursos[$i]["curso"]." - id:".$cursos[$i]["id_curso"]."</option>";                   
                                     }
                                 ?>
                         </select>
@@ -150,20 +150,19 @@ include getcwd()."/src/templates/header.php";
         <hr>
         <div class="assignar_professor">
             <h3>Assignar un professor a un curs</h3>
-            <form action="assignar_professor.php" method="post">
+            <form action="seleccionar_professor.php" method="post">
                 <div class="row">
                     <div class="form-group col">
                         <label for="id_professor">Professor:</label>
-                        <select id="id_professor" class="custom-select">
+                        <select id="id_professor" class="custom-select" name="profesor">
                             <option selected>Seleccionar el professor registrat amb el curs que vols modificar.</option>
-                                <?php "<option value=".$id_professor.">".$professor." - ".$id_professor."</option>" ?>
+                            <?php 
+                                    for($i=0; $i<count($profesores); $i++){
+                                        echo "<option value='".$profesores[$i]["id_profesor"]."'>".$profesores[$i]["nombre"]."</option>";                   
+                                    }
+                            ?>  
                         </select>
 
-                        <label for="id_curso">Curs</label>
-                        <select id="id_curso" class="custom-select">
-                            <option selected>Selecciona el curs al que vols assignar aquest professor.</option>
-                                <?php "<option value=".$id_curso.">".$curso."</option>" ?>
-                        </select>
                     </div>
                 </div>
                 <button type="submit" class="btn btn-primary">Confirma</button>
@@ -176,11 +175,11 @@ include getcwd()."/src/templates/header.php";
                 <div class="row">
                     <div class="form-group col">
                         <label for="view_curso">Curs</label>
-                        <select id="view_curso" class="custom-select">
+                        <select id="view_curso" class="custom-select" name="curso">
                             <option selected>Selecciona el curs al que vols veure.</option>
                                 <?php 
                                     for($i=0; $i<count($cursos); $i++){
-                                        echo "<option value='".$cursos[$i]["id_curso"]."'>".$cursos[$i]["curso"]."</option>";                   
+                                        echo "<option value='".$cursos[$i]["id_curso"]."'>".$cursos[$i]["curso"]." - id:".$cursos[$i]["id_curso"]."</option>";                   
                                     }
                                 ?>
                         </select>

@@ -97,12 +97,25 @@ INSERT INTO Estado (id_estado, estado) VALUES (NULL, "Tancada");
 INSERT INTO Estado (id_estado, estado) VALUES (NULL, "Limbo");
 
 -- VARIABLE VALUES
-INSERT INTO Usuarios (id_usuario, id_role, nombre, apellido_primero, apellido_segundo, email, user_name, password, cookie, fecha_registro, fecha_cookie) VALUES (NULL, 1, "Aitor", "Sanchez", "Darwin", "darwinsanchez42@gmail.com", "DAitorS", "12345", NULL, NULL, NULL);
 
-INSERT INTO Usuarios (id_usuario, id_role, nombre, apellido_primero, apellido_segundo, email, user_name, password, cookie, fecha_registro, fecha_cookie) VALUES (NULL, 3, "Moran", "Gabriel", "Darwin", "darwinsanchez421@gmail.com", "DAitorS", "12345", NULL, NULL, NULL);
+INSERT INTO Usuarios (id_usuario, id_role, nombre, apellido_primero, apellido_segundo, email, user_name, password, cookie, fecha_registro, fecha_cookie) VALUES (NULL, 3, "Administrador", "Sanchez", "Darwin", "admin@development.localhost", "admin", "rootp@ssw0rd123", NULL, NULL, NULL);
+
+INSERT INTO Usuarios (id_usuario, id_role, nombre, apellido_primero, apellido_segundo, email, user_name, password, cookie, fecha_registro, fecha_cookie) VALUES (NULL, 2, "Professor", "Moran", "Darwin", "teacher@development.localhost", "professor", "teacherP@ssw0rd123", NULL, NULL, NULL);
+
+INSERT INTO Usuarios (id_usuario, id_role, nombre, apellido_primero, apellido_segundo, email, user_name, password, cookie, fecha_registro, fecha_cookie) VALUES (NULL, 1, "Alumne", "Gabriel", "Darwin", "student@development.localhost", "alumne", "studentP@ssw0rd123", NULL, NULL, NULL);
+
+
+INSERT INTO Professor (id_profesor, id_usuario, id_curso) VALUES (NULL, 2, 1)
+
+INSERT INTO Alumne (id_alumno, id_usuario, id_curso) VALUES (NULL, 3, 1)
+
 
 INSERT INTO Cursos (id_curso, curso, cuerpo, id_profesor, id_estado) VALUES (NULL, "Full Stack Web Development", "Aprende a desarollar aplicaciones web de servidor a cliente", 1, 1);
 
-INSERT INTO Usuarios (id_usuario, id_role, nombre, apellido_primero, apellido_segundo, email, user_name, password, cookie, fecha_registro, fecha_cookie) VALUES (NULL, 2, "Moran", "Gabriel", "Darwin", "darwinsanchez421@gmail.com", "DAitorS", "12345", NULL, NULL, NULL);
+INSERT INTO Cursos (id_curso, curso, cuerpo, id_profesor, id_estado) VALUES (NULL, "Full Stack Web Development", "Aprende a desarollar aplicaciones web de servidor a cliente", 1, 1);
 
-INSERT INTO Matricula (id_matricula, id_curso, id_usuario) VALUES (NULL, 1, 1);
+
+INSERT INTO Matricula (id_matricula, id_curso, id_alumno) VALUES (NULL, 1, 1);
+
+INSERT INTO Imparticion (id_imparticion, id_curso, id_profesor) VALUES (NULL, 2, 1);
+
