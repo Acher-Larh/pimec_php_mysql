@@ -23,18 +23,6 @@ echo $output_buffer;
 ?>
 <?php
 
-function validate($data)
-{
-
-    $data = trim($data);
-
-    $data = stripslashes($data);
-
-    $data = htmlspecialchars($data);
-
-    return $data;
-}
-
 if (isset($_POST['remove-enrollment']) && validate($_POST['remove-enrollment']) !== 0) {
     $sql_modify_table = "UPDATE Usuario";
 
@@ -158,7 +146,19 @@ $mysqli->close();
 </head>
 
 <body>
+<!-- DESFER LA CONEXIÓ A LA BASE DE DADES -->
+<?php
+ob_start();
+include "./footer.php";
 
+$output_buffer = ob_get_contents();
+
+ob_end_clean();
+
+echo $output_buffer;
+?>
 </body>
 
 </html>
+
+

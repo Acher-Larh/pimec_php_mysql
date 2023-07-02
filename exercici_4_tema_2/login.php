@@ -32,17 +32,7 @@ $url = (empty($_SERVER['HTTPS']) ? 'http' : 'https') . "://$_SERVER[HTTP_HOST]$_
 
 if (isset($_POST['email']) && isset($_POST['password'])) {
 
-    function validate($data){
-
-        $data = trim($data);
-
-        $data = stripslashes($data);
-
-        $data = htmlspecialchars($data);
-
-        return $data;
-
-    }
+    
     $email = validate($_POST['email']);
     $password = validate($_POST['password']);
 
@@ -112,9 +102,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
         }
     }
 }
-$mysqli->close();
 
 ?>
 
+<!-- DESFER LA CONEXIÓ A LA BASE DE DADES -->
+<?php
+ob_start();
+include "./footer.php";
+
+$output_buffer = ob_get_contents();
+
+ob_end_clean();
+
+echo $output_buffer;
+?>
 </body>
 </html>
+

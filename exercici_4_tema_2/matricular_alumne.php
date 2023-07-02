@@ -1,48 +1,55 @@
-<?php 
+<!-- FER LA CONEXIÓ A LA BASE DE DADES -->
+<?php
+ob_start();
+include "./db_connect.php";
 
-$nombre = "'".$_POST['nombre']."'";
-$apellido_primero = "'".$_POST['apellido_primero']."'";
-$apellido_segundo = "'".$_POST['apellido_segundo']."'";
-$email = "'".$_POST['email']."'";
-$username = "'".$_POST['username']."'";
-$password = "'".$_POST['password']."'";
-// $curso = $_POST['curso'] ? $_POST['curso'] : NULL ;
-// echo $user." - ".$password;
+$output_buffer = ob_get_contents();
 
-$mysqli = new mysqli('localhost', 'root', '|º@ssw0rd123.pP', 'gestion_alumnos');
+ob_end_clean();
 
-if ($mysqli->connect_errno) {
+echo $output_buffer;
+?>
 
+<!-- INICIALITZAR LA FUNCION GET_DB() -->
+<?php
+ob_start();
+include "./get_db.php";
 
-    echo "Error de conexión.";
+$output_buffer = ob_get_contents();
 
-    echo "Error: Fallo al conectarse a MySQ: \n";
+ob_end_clean();
 
-    echo "Error: " . $mysqli->connect_errno . "\n";
+echo $output_buffer;
+?>
+<?php
 
-    echo "Error: " . $mysqli->connect_error . "\n";
+if (isset($_POST['nombre']) and isset($_POST['apellido_primero']) and isset($_POST['apellido_segundo']) and isset($_POST['email']) and isset($_POST['username']) and isset($_POST['password'])){
+    $values = array(
+        'nombre' => validate($_POST['nombre']),
+        'apellido_primero' => validate($_POST['apellido_primero']),
+        'apellido_segundo' => validate($_POST['apellido_segundo']),
+        'email' => validate($_POST['email']),
+        'username' => validate($_POST['username']),
+        'password' => validate($_POST['password']),
+        'curso' => validate($_POST['curso'])
+    );
+} 
 
-    exit;
-
-
-}    
-
-$mysqli->set_charset("utf8");
-
-
-// $sql = "SELECT * FROM Usuarios";
-$sql = "INSERT INTO Usuarios 
-(id_usuario, id_role, nombre, apellido_primero, apellido_segundo, email, user_name, password, cookie, fecha_registro, fecha_cookie) 
-VALUES (NULL, 1, $nombre, $apellido_primero, $apellido_segundo, $email, $username, $password, NULL, NULL, NULL);";
-
-if ( $mysqli->query($sql)) {
-    echo "Fila insertada";
-    }
-else {
-    echo "Error de MySQL debido a: \n";
-    echo  $mysqli->error . "\n";            
-}
-
-$mysqli->close();
+matricular_alumno($values, $mysqli);
 
 ?>
+
+<!-- DESFER LA CONEXIÓ A LA BASE DE DADES -->
+<?php
+ob_start();
+include "./footer.php";
+
+$output_buffer = ob_get_contents();
+
+ob_end_clean();
+
+echo $output_buffer;
+?>
+</body>
+
+</html>

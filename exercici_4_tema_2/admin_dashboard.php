@@ -27,19 +27,13 @@ echo $output_buffer;
 $cursos = get_db("SELECT * FROM Cursos;", $mysqli);
 
 
-// foreach($matriculas as $id=>$matricula){
-//     echo $matricula;
-// }
 $profesores = get_db("SELECT * FROM Profesores JOIN Usuarios ON Profesores.id_usuario=Usuarios.id_usuario WHERE id_role=2;", $mysqli);
 
 $alumnos = get_db("SELECT * FROM Alumnos JOIN Usuarios ON Alumnos.id_usuario=Usuarios.id_usuario;", $mysqli);
 
-
-// $cursos = array();
-// foreach($cursos_db as $id=>$curso){
-//     array_push($cursos, $curso);
-// }
 $site_title = "Admin Dashboard";
+
+
 
 include getcwd()."/src/templates/header.php";
 
@@ -79,7 +73,7 @@ include getcwd()."/src/templates/header.php";
                     </div>
                     <div class="form-group col">
                         <label for="curso">Cursos</label>
-                        <select id="curso" class="custom-select">
+                        <select id="curso" class="custom-select" name="curso">
                             <option selected>Obre per seleccionar curs</option>
                                 <?php 
                                     for($i=0; $i<count($cursos); $i++){
@@ -106,16 +100,16 @@ include getcwd()."/src/templates/header.php";
                     </div>
                     <div class="form-group col">
                         <label for="professor" >Professor</label>
-                        <select id="professor" class="custom-select">
+                        <select id="professor" class="custom-select" name="professor">
                             <option selected>Selecciona el professor que impartirà aquest curs.</option>
                             <?php 
                                     for($i=0; $i<count($profesores); $i++){
-                                        echo "<option value='".$profesores[$i]["id_usuario"]."'>".$profesores[$i]["nombre"]."</option>";                   
+                                        echo "<option value='".$profesores[$i]["id_profesor"]."'>".$profesores[$i]["nombre"]."</option>";                   
                                     }
                                 ?>
                         </select>
                         <label for="id_estado">Estat del curs:</label>
-                        <select id="id_estado" class="custom-select">
+                        <select id="id_estado" class="custom-select" name="id_estado">
                             <option selected>Seleccionar l'estat en qué es troba el curs.</option>
                             <option value="1">Oberta</option>
                             <option value="2">Tancada</option>
@@ -196,6 +190,17 @@ include getcwd()."/src/templates/header.php";
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     </body>
+    <!-- DESFER LA CONEXIÓ A LA BASE DE DADES -->
+<?php
+ob_start();
+include "./footer.php";
+
+$output_buffer = ob_get_contents();
+
+ob_end_clean();
+
+echo $output_buffer;
+?>
 </html>
 
 
@@ -215,7 +220,3 @@ include getcwd()."/src/templates/header.php";
 
 
 
-
-<?php
-$mysqli->close();
-?>

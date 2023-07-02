@@ -33,6 +33,7 @@ if (isset($_POST['matricula'])) {
 $sql_query = "SELECT * FROM Matricula WHERE id_matricula=$id_matricula;";
 $matricula = (get_db($sql_query, $mysqli))[0];
 
+
 $sql_query = "SELECT id_curso, curso, cuerpo, id_estado, id_profesor FROM Cursos WHERE id_curso=" . $matricula['id_curso'] . ";";
 $curso = (get_db($sql_query, $mysqli))[0];
 
@@ -42,7 +43,7 @@ $profesor = get_db($sql_query, $mysqli)[0];
 $sql_query = "SELECT * FROM Estado JOIN Cursos ON Estado.id_estado=Cursos.id_estado WHERE Cursos.id_estado=" . $curso['id_estado'];
 $estado = get_db($sql_query, $mysqli)[0];
 
-$sql_query = "SELECT Cursos.curso, Cursos.cuerpo, Usuarios.nombre, Usuarios.apellido_primero, Usuarios.apellido_segundo, Usuarios.email, Usuarios.fecha_registro, Usuarios.user_name FROM Usuarios JOIN Alumnos ON Alumnos.id_usuario=Usuarios.id_usuario JOIN Matricula ON Matricula.id_alumno=Alumnos.id_alumno JOIN Cursos ON Matricula.id_curso=Cursos.id_curso WHERE Alumnos.id_alumno=" . $matricula['id_alumno'] . ";";
+$sql_query = "SELECT  Cursos.curso, Cursos.cuerpo, Usuarios.id_usuario, Usuarios.nombre, Usuarios.apellido_primero, Usuarios.apellido_segundo, Usuarios.email, Usuarios.fecha_registro, Usuarios.user_name FROM Usuarios JOIN Alumnos ON Alumnos.id_usuario=Usuarios.id_usuario JOIN Matricula ON Matricula.id_alumno=Alumnos.id_alumno JOIN Cursos ON Matricula.id_curso=Cursos.id_curso WHERE Alumnos.id_alumno=" . $matricula['id_alumno'] . ";";
 $alumnos = get_db($sql_query, $mysqli)[0];
 ?>
 <!DOCTYPE html>
@@ -55,15 +56,16 @@ $alumnos = get_db($sql_query, $mysqli)[0];
 </head>
 
 <body>
-    <script>
+    <!-- <script>
         function remove_enrollment(form) {
             confirm("Estas segur de que vols eliminar aquesta matrícula?", form.submit())
 
         }
-        function reset_password(form){
+
+        function reset_password(form) {
             confirm("Segur que vols restablir la contraseña d'aquest usuari?", form.submit())
         }
-    </script>
+    </script> -->
     <?php include getcwd() . "/src/templates/header.php"; ?>
     <br>
     <h1>
@@ -78,41 +80,53 @@ $alumnos = get_db($sql_query, $mysqli)[0];
     <hr style="color:black; background-color:#dee2e6; width: 100%;">
     <div class="matricula">
         <h2>Modificar Matricula</h2>
-        <form method="post" action="cambiar_dades_matricula.php">
+        <br>
+        <div class="row">
             <div class="form-group col">
-                <button id="drop-row" class="btn btn-danger" onclick="remove_enrollment(form)" value="1" name="remove-enrollment">Eliminar</button>
+            <form method="post" action="eliminar_matricula.php">
+                    <button id="drop-row" class="btn btn-danger"  value="<?php echo $matricula['id_matricula'];?>" name="remove-enrollment" style="width:80vw;">Eliminar</button>
             </div>
-            <div class="row">
-                <div class="form-group col">
-                    <label for="nombre">Nom:</label>
-                    <input type="text" class="form-control" id="nombre" aria-describedby="userHelp" value='<?php echo $alumnos['nombre']; ?>' name="nombre">
-                    <label for="apellido_primero">Primer Cognom:</label>
-                    <input type="text" class="form-control" id="apellido_primero" aria-describedby="userHelp" value='<?php echo $alumnos['apellido_primero']; ?>' name="apellido_primero">
-                    <label for="apellido_segundo">Segon Cognom:</label>
-                    <input type="text" class="form-control" id="apellido_segundo" aria-describedby="userHelp" value='<?php echo $alumnos['apellido_segundo']; ?>' name="apellido_segundo">
+            </form>
+        </div>
+            <div class="form-group col">
 
-                    <label for="email">Correu Electrónic:</label>
-                    <input type="text" class="form-control" id="email" aria-describedby="userHelp" value='<?php echo $alumnos['email']; ?>' name="email">
-                </div>
-                <div class="form-group col">
-                    <label for="username">Nom d'usuari</label>
-                    <input type="text" class="form-control" id="username" aria-describedby="userHelp" value="<?php echo $alumnos['user_name']; ?>" name="username">
-
-                    <label for="for">Cambiar Contraseña</label>
-                    <br>
-                    <button readonly id="drop-row" class="btn btn-danger " onclick="reset_password(form)" name="reset_password">Enviar Correu</button>
-
-                </div>
-                <div class="form-group col">
-                    <label for="id_alumno">Identificador</label>
-                    <input type="text" name="id_alumno" class="form-control" id="id_alumno" value="<?php echo $matricula['id_alumno']; ?>" readonly>
+                <table class="table" style="border: 1px solid #dee2e6; width: 80vw; padding:10vw;">
+                    <thead>
+                        <tr>
+                            <?php
+                            foreach (array_keys($alumnos) as $key) {
+                                echo "<th scope='col'>" . ucfirst($key) . "</th>";
+                            }
 
 
-                </div>
+                            ?>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        if (count($alumnos) !== 0) {
+                            foreach ($alumnos as $id => $alumno) {
+                                echo "<td> ".$alumno." </td>";
+                            }
+                        }
+                        ?>
+                    </tbody>
+                </table>
+
             </div>
-            <button type="submit" class="btn btn-primary">Confirma</button>
-        </form>
-    </div>
+                
+        </div>
+<!-- DESFER LA CONEXIÓ A LA BASE DE DADES -->
+<?php
+ob_start();
+include "./footer.php";
+
+$output_buffer = ob_get_contents();
+
+ob_end_clean();
+
+echo $output_buffer;
+?>
 </body>
 
 </html>

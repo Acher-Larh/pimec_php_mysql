@@ -216,6 +216,17 @@ $alumnos = get_db($sql_query, $mysqli);
             </div>
         </div>
     </div>
+    <!-- DESFER LA CONEXIÓ A LA BASE DE DADES -->
+<?php
+ob_start();
+include "./footer.php";
+
+$output_buffer = ob_get_contents();
+
+ob_end_clean();
+
+echo $output_buffer;
+?>
 </body>
 
 </html>
