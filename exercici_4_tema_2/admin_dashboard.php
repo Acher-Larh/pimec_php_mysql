@@ -142,7 +142,8 @@ include getcwd()."/src/templates/header.php";
             </form>
         </div>
         <hr>
-        <div class="assignar_professor">
+        <!-- AQUESTA SECCIÓ NO FUNCIONA, EN TOT CAS ES POT ASSIGNAR UN PROFESSOR A L'HORA DE REGISTRAR EL CURS  -->
+        <!-- <div class="assignar_professor">
             <h3>Assignar un professor a un curs</h3>
             <form action="seleccionar_professor.php" method="post">
                 <div class="row">
@@ -151,9 +152,9 @@ include getcwd()."/src/templates/header.php";
                         <select id="id_professor" class="custom-select" name="profesor">
                             <option selected>Seleccionar el professor registrat amb el curs que vols modificar.</option>
                             <?php 
-                                    for($i=0; $i<count($profesores); $i++){
-                                        echo "<option value='".$profesores[$i]["id_profesor"]."'>".$profesores[$i]["nombre"]."</option>";                   
-                                    }
+                                    // for($i=0; $i<count($profesores); $i++){
+                                    //     echo "<option value='".$profesores[$i]["id_profesor"]."'>".$profesores[$i]["nombre"]."</option>";                   
+                                    // }
                             ?>  
                         </select>
 
@@ -162,7 +163,7 @@ include getcwd()."/src/templates/header.php";
                 <button type="submit" class="btn btn-primary">Confirma</button>
             </form>
         </div>        
-        <hr>
+        <hr> -->
         <div class="veure_curs">
         <h3>Selecciona el curs que vols visualitzar</h3>
             <form action="view_curso.php" method="post">

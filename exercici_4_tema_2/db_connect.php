@@ -1,7 +1,7 @@
 <?php 
 session_start(); 
 
-$mysqli = new mysqli('localhost', 'admin', '|º@ssw0rd123.pP', 'gestion_alumnos');
+$mysqli = new mysqli('localhost', 'admin', '|º@ssw0rd123.pP', 'test');
 
 if ($mysqli->connect_errno) {
 

@@ -11,6 +11,18 @@ ob_end_clean();
 echo $output_buffer;
 ?>
 
+<!-- INICIALITZAR LA FUNCION GET_DB() -->
+<?php 
+ob_start();
+include "./get_db.php";
+
+$output_buffer = ob_get_contents();
+
+ob_end_clean();
+
+echo $output_buffer;
+?>
+
 <!-- IMPORTAR LA BARRA DE NAVIGACIÓ -->
 <?php
 ob_start();

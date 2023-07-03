@@ -25,7 +25,7 @@ CREATE TABLE Usuarios (
     nombre TEXT NOT NULL,
     apellido_primero TEXT NOT NULL,
     apellido_segundo TEXT DEFAULT NULL,
-    email NVARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
     user_name TEXT NOT NULL,
     password varchar(100),
     cookie VARCHAR(100),
@@ -53,7 +53,7 @@ CREATE TABLE Profesores (
     id_usuario INT NOT NULL, 
     id_curso INT NOT NULL, 
     PRIMARY KEY (id_profesor),
-    FOREIGN KEY (id_curso) REFERENCES Cursos(id_curso),
+    FOREIGN KEY (id_curso) REFERENCES Cursos(id_curso) ,
     FOREIGN KEY (id_usuario) REFERENCES Usuarios(id_usuario)
 ) ENGINE=InnoDB;
 
@@ -63,7 +63,7 @@ CREATE TABLE Alumnos (
     id_usuario INT NOT NULL, 
     id_curso INT NOT NULL, 
     PRIMARY KEY (id_alumno),
-    FOREIGN KEY (id_curso) REFERENCES Cursos(id_curso),
+    FOREIGN KEY (id_curso) REFERENCES Cursos(id_curso) ON UPDATE CASCADE,
     FOREIGN KEY (id_usuario) REFERENCES Usuarios(id_usuario)
 ) ENGINE=InnoDB;
 
@@ -82,7 +82,7 @@ CREATE TABLE Matricula (
     id_matricula INT NOT NULL AUTO_INCREMENT,
     id_curso INT NOT NULL,
     id_alumno INT NOT NULL,
-    PRIMARY KEY (id_matricua),
+    PRIMARY KEY (id_matricula),
     FOREIGN KEY (id_curso) REFERENCES Cursos(id_curso),
     FOREIGN KEY (id_alumno) REFERENCES Alumnos(id_alumno)
 ) ENGINE=InnoDB;
@@ -98,21 +98,20 @@ INSERT INTO Estado (id_estado, estado) VALUES (NULL, "Limbo");
 
 -- VARIABLE VALUES
 
-INSERT INTO Usuarios (id_usuario, id_role, nombre, apellido_primero, apellido_segundo, email, user_name, password, cookie, fecha_registro, fecha_cookie) VALUES (NULL, 3, "Administrador", "Sanchez", "Darwin", "admin@development.localhost", "admin", "rootp@ssw0rd123", NULL, NULL, NULL);
+INSERT INTO Usuarios (id_usuario, id_role, nombre, apellido_primero, apellido_segundo, email, user_name, password, cookie, fecha_registro, fecha_cookie) VALUES (NULL, 3, "Administrador", "Sanchez", "Darwin", "admin@gmail.com", "admin", "12345", NULL, NULL, NULL);
 
 INSERT INTO Usuarios (id_usuario, id_role, nombre, apellido_primero, apellido_segundo, email, user_name, password, cookie, fecha_registro, fecha_cookie) VALUES (NULL, 2, "Professor", "Moran", "Darwin", "teacher@development.localhost", "professor", "teacherP@ssw0rd123", NULL, NULL, NULL);
 
 INSERT INTO Usuarios (id_usuario, id_role, nombre, apellido_primero, apellido_segundo, email, user_name, password, cookie, fecha_registro, fecha_cookie) VALUES (NULL, 1, "Alumne", "Gabriel", "Darwin", "student@development.localhost", "alumne", "studentP@ssw0rd123", NULL, NULL, NULL);
 
-
-INSERT INTO Professor (id_profesor, id_usuario, id_curso) VALUES (NULL, 2, 1)
-
-INSERT INTO Alumne (id_alumno, id_usuario, id_curso) VALUES (NULL, 3, 1)
-
-
 INSERT INTO Cursos (id_curso, curso, cuerpo, id_profesor, id_estado) VALUES (NULL, "Full Stack Web Development", "Aprende a desarollar aplicaciones web de servidor a cliente", 1, 1);
 
 INSERT INTO Cursos (id_curso, curso, cuerpo, id_profesor, id_estado) VALUES (NULL, "Full Stack Web Development", "Aprende a desarollar aplicaciones web de servidor a cliente", 1, 1);
+
+
+INSERT INTO Profesores (id_profesor, id_usuario, id_curso) VALUES (NULL, 2, 1);
+
+INSERT INTO Alumnos (id_alumno, id_usuario, id_curso) VALUES (NULL, 3, 1);
 
 
 INSERT INTO Matricula (id_matricula, id_curso, id_alumno) VALUES (NULL, 1, 1);

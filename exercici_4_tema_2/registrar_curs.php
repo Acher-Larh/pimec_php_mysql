@@ -50,7 +50,7 @@ if (isset($_POST['curso']) and isset($_POST['cuerpo_curso']) and isset($_POST['p
             <div class="form-group col">
                 <?php $id_curso = insertar_curso($values, $mysqli); ?>
                 <?php 
-                echo "El curs ha sigut registrat amb la ID: ".$id_curso.".";
+                echo "El curs ha sigut registrat.";
                 ?>
             </div>
         </div>

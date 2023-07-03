@@ -38,6 +38,18 @@ if (isset($_POST['nombre']) and isset($_POST['apellido_primero']) and isset($_PO
 matricular_alumno($values, $mysqli);
 
 ?>
+<?php
+ob_start();
+include "./src/templates/header.php";
+
+$output_buffer = ob_get_contents();
+
+ob_end_clean();
+
+echo $output_buffer;
+?>
+
+<h1 style="margin-left: 30vw;">Matricula registrada</h1>
 
 <!-- DESFER LA CONEXIÓ A LA BASE DE DADES -->
 <?php
